@@ -1,0 +1,37 @@
+@startuml
+
+package TricycleBLEService <<Rectangle>> {
+    class BatteryPercentage {
+        Type: READ
+        Value: 80 [1 byte]
+    }
+
+    class Mileage {
+        Type: READ
+        Value: 10000 [3 bytes]
+    }
+
+    class Load {
+        Type: READ
+        Value: 100 [2 bytes]
+    }
+
+    class Events {
+        Type: NOTIFY
+        Value: 5 [1 byte]
+    }
+
+    note bottom of Events
+       5 = 1 + 4 = 0b0001 + 0b0100 = Front load too heavy & Battery too hot
+    end note
+}
+
+enum EventTypes {
+    0b0001: Front load too heavy
+    0b0010: Package loss
+    0b0100: Battery too hot
+    0b1000: Motor too hot
+}
+
+Events::Value ..> EventTypes : "uses"
+@enduml
