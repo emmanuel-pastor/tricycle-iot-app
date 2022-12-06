@@ -1,9 +1,10 @@
 package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble
 
+@OptIn(ExperimentalUnsignedTypes::class)
 interface TricycleServiceAccessor {
-    suspend fun getBatteryPercentage(): ByteArray
+    suspend fun getBatteryPercentage(): UByteArray
 
-    suspend fun getLoad(): ByteArray
+    suspend fun getLoad(): UByteArray
 
-    suspend fun getMileage(): ByteArray
+    suspend fun getMileage(): UByteArray
 }
