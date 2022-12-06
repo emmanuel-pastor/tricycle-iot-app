@@ -3,22 +3,22 @@
 package TricycleBLEService <<Rectangle>> {
     class BatteryPercentage {
         Type: READ
-        Value: 80 [1 byte]
+        Value: 80 [UINT8]
     }
 
     class Mileage {
         Type: READ
-        Value: 10000 [3 bytes]
+        Value: 10000 [UINT32]
     }
 
     class Load {
         Type: READ
-        Value: 100 [2 bytes]
+        Value: 100 [UINT16]
     }
 
     class Events {
         Type: NOTIFY
-        Value: 5 [1 byte]
+        Value: 5 [UINT8]
     }
 
     note bottom of Events
