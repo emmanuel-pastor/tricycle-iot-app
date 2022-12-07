@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "com.emmanuel.pastor.simplesmartapps.tricycle";
+option java_multiple_files = true;
+
+import "google/protobuf/timestamp.proto";
+
+message TricycleProtoEntity {
+  uint32 battery_percentage = 1;
+  uint32 load = 2;
+  uint32 mileage = 3;
+  google.protobuf.Timestamp last_updated = 4;
+}
