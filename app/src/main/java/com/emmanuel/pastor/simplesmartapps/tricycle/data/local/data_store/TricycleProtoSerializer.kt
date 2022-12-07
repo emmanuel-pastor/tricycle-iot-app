@@ -1,4 +1,4 @@
-package com.emmanuel.pastor.simplesmartapps.tricycle.data.local.`data-store`
+package com.emmanuel.pastor.simplesmartapps.tricycle.data.local.data_store
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
