@@ -13,6 +13,10 @@ value class BatteryBleEntity(val percentage: Int) {
     }
 
     companion object {
+        /*
+        * Uses only the first byte of the array.
+        * @return null if not called with a unsigned byte array of size at least 1.
+        */
         @OptIn(ExperimentalUnsignedTypes::class)
         fun fromUByteArrayOrNull(byteArray: UByteArray): BatteryBleEntity? {
             if (byteArray.isEmpty()) return null
