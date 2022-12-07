@@ -1,11 +1,11 @@
 package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models
 
-/*
-    * Represents the battery percentage of the tricycle.
-    * The battery percentage is encoded as 1 unsigned byte.
-    * The battery percentage can go from 0 to 100.
-    * @throws IllegalArgumentException if the battery percentage is not in the range [0, 100]
-*/
+/**
+ * Represents the battery percentage of the tricycle.
+ * The battery percentage is encoded as 1 unsigned byte.
+ * The battery percentage can go from 0 to 100.
+ * @throws IllegalArgumentException if the battery percentage is not in the range [0, 100]
+ */
 @JvmInline
 value class BatteryBleEntity(val percentage: Int) {
     init {
@@ -13,10 +13,12 @@ value class BatteryBleEntity(val percentage: Int) {
     }
 
     companion object {
-        /*
-        * Uses only the first byte of the array.
-        * @return null if not called with a unsigned byte array of size at least 1.
-        */
+        /**
+         * Creates a [BatteryBleEntity] from a [UByteArray] or returns null if the [UByteArray] is not
+         * valid.
+         * Uses only the first byte of the array.
+         * @return null if not called with a [UByteArray] of size at least 1.
+         */
         @OptIn(ExperimentalUnsignedTypes::class)
         fun fromUByteArrayOrNull(byteArray: UByteArray): BatteryBleEntity? {
             if (byteArray.isEmpty()) return null
