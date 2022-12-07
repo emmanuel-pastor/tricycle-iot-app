@@ -1,8 +1,10 @@
 package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble
 
+import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.BatteryBleEntity
+
 @OptIn(ExperimentalUnsignedTypes::class)
 interface TricycleServiceAccessor {
-    suspend fun getBatteryPercentage(): UByteArray
+    suspend fun getBatteryPercentage(): Result<BatteryBleEntity>
 
     suspend fun getLoad(): UByteArray
 
