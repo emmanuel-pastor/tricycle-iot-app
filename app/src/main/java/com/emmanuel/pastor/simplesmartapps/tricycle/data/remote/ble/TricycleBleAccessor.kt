@@ -4,7 +4,7 @@ import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.Batte
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.LoadBleEntity
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.MileageBleEntity
 
-interface TricycleServiceAccessor {
+interface TricycleBleAccessor {
     suspend fun getBatteryPercentage(): Result<BatteryBleEntity>
 
     suspend fun getLoad(): Result<LoadBleEntity>

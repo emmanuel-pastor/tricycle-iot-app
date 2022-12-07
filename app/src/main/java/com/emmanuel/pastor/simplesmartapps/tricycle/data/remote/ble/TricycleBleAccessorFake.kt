@@ -6,7 +6,7 @@ import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.Milea
 import java.nio.ByteBuffer
 
 @ExperimentalUnsignedTypes
-class TricycleServiceAccessorFake : TricycleServiceAccessor {
+class TricycleBleAccessorFake : TricycleBleAccessor {
     override suspend fun getBatteryPercentage(): Result<BatteryBleEntity> {
         val randomInt = getRandomIntAsUByteArray(1, maxValue = 100)
 
