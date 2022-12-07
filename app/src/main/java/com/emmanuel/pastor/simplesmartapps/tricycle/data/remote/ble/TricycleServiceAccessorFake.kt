@@ -1,6 +1,7 @@
 package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble
 
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.BatteryBleEntity
+import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.LoadBleEntity
 import java.nio.ByteBuffer
 
 @ExperimentalUnsignedTypes
@@ -12,8 +13,11 @@ class TricycleServiceAccessorFake : TricycleServiceAccessor {
             ?: Result.failure(IllegalStateException("Could not get battery percentage"))
     }
 
-    override suspend fun getLoad(): UByteArray {
-        return getRandomIntAsUByteArray(2, 200)
+    override suspend fun getLoad(): Result<LoadBleEntity> {
+        val randomInt = getRandomIntAsUByteArray(2, 200)
+
+        return LoadBleEntity.fromUByteArrayOrNull(randomInt)?.let { Result.success(it) }
+            ?: Result.failure(IllegalStateException("Could not get load"))
     }
 
     override suspend fun getMileage(): UByteArray {
