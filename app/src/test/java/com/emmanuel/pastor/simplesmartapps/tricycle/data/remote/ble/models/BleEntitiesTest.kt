@@ -17,7 +17,7 @@ class BleEntitiesTest {
     fun `create LoadBleEntity from unsigned byte array`() = runBlocking {
         val uByteArray = ubyteArrayOf(0xFFu, 0x01u)
         val loadBleEntity = LoadBleEntity.fromUByteArrayOrNull(uByteArray)
-        assertEquals(511, loadBleEntity?.loadWeight)
+        assertEquals(511, loadBleEntity?.load)
     }
 
     @Test

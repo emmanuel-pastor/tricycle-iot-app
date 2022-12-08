@@ -6,7 +6,7 @@ package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models
  * Weight is in kilograms.
  */
 @JvmInline
-value class LoadBleEntity(val loadWeight: Int) {
+value class LoadBleEntity(val load: Int) {
     companion object {
         /**
          * Creates a [LoadBleEntity] from a [UByteArray] or returns null if the [UByteArray] is not
