@@ -30,6 +30,9 @@ sealed class Measure {
         }
     }
 
+    /**
+     * @param ratio the proportion between 0.0 and 1.0
+     */
     data class Proportion(val ratio: Double, override val unit: ProportionUnit) : IMeasure {
         override val value = ratio.coerceIn(0.0, 1.0)
     }

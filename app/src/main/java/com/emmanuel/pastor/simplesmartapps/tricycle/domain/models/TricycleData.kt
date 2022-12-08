@@ -21,7 +21,7 @@ data class TricycleData(
 
 fun TricycleDsEntity.toTricycleData(): TricycleData =
     TricycleData(
-        batteryPercentage = this.batteryPercentage?.let { Measure.Proportion(it.toDouble(), ProportionUnit.Percent) },
+        batteryPercentage = this.batteryPercentage?.let { Measure.Proportion(it / 100.0, ProportionUnit.Percent) },
         load = this.load?.let { Measure.Weight(it.toDouble(), WeightUnit.Kilogram) },
         mileage = this.mileage?.let { Measure.Distance(it.toDouble(), DistanceUnit.Kilometer) },
         lastUpdated = this.lastUpdated
