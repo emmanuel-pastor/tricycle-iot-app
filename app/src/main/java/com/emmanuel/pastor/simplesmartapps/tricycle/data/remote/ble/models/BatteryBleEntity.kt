@@ -17,6 +17,7 @@ value class BatteryBleEntity(val percentage: Int) {
          * Creates a [BatteryBleEntity] from a [UByteArray] or returns null if the [UByteArray] is not
          * valid.
          * Uses only the first byte of the array.
+         * The max value that can be received is 255 < [Int.MAX_VALUE].
          * @return null if not called with a [UByteArray] of size at least 1.
          */
         @OptIn(ExperimentalUnsignedTypes::class)
