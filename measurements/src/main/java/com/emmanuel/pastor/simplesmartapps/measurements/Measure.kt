@@ -3,35 +3,34 @@ package com.emmanuel.pastor.simplesmartapps.measurements
 private sealed interface IMeasure {
     val value: Double
     val unit: MeasurementUnit
-    val timestamp: Long
 }
 
 sealed class Measure {
-    data class Distance(override val value: Double, override val unit: DistanceUnit, override val timestamp: Long) : IMeasure {
+    data class Distance(override val value: Double, override val unit: DistanceUnit) : IMeasure {
         fun convertTo(newUnit: DistanceUnit): Distance {
-            return Distance(value = unit.convertTo(value, newUnit), unit = newUnit, timestamp = timestamp)
+            return Distance(value = unit.convertTo(value, newUnit), unit = newUnit)
         }
     }
 
-    data class Weight(override val value: Double, override val unit: WeightUnit, override val timestamp: Long) : IMeasure {
+    data class Weight(override val value: Double, override val unit: WeightUnit) : IMeasure {
         fun convertTo(newUnit: WeightUnit): Weight {
-            return Weight(value = unit.convertTo(value, newUnit), unit = newUnit, timestamp = timestamp)
+            return Weight(value = unit.convertTo(value, newUnit), unit = newUnit)
         }
     }
 
-    data class Speed(override val value: Double, override val unit: SpeedUnit, override val timestamp: Long) : IMeasure {
+    data class Speed(override val value: Double, override val unit: SpeedUnit) : IMeasure {
         fun convertTo(newUnit: SpeedUnit): Speed {
-            return Speed(value = unit.convertTo(value, newUnit), unit = newUnit, timestamp = timestamp)
+            return Speed(value = unit.convertTo(value, newUnit), unit = newUnit)
         }
     }
 
-    data class Time(override val value: Double, override val unit: TimeUnit, override val timestamp: Long) : IMeasure {
+    data class Time(override val value: Double, override val unit: TimeUnit) : IMeasure {
         fun convertTo(newUnit: TimeUnit): Time {
-            return Time(value = unit.convertTo(value, newUnit), unit = newUnit, timestamp = timestamp)
+            return Time(value = unit.convertTo(value, newUnit), unit = newUnit)
         }
     }
 
-    data class Proportion(val ratio: Double, override val unit: ProportionUnit, override val timestamp: Long) : IMeasure {
+    data class Proportion(val ratio: Double, override val unit: ProportionUnit) : IMeasure {
         override val value = ratio.coerceIn(0.0, 1.0)
     }
 }
