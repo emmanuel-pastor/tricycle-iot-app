@@ -22,8 +22,8 @@ class BleEntitiesTest {
 
     @Test
     fun `create MileageBleEntity from unsigned byte array`() = runBlocking {
-        val uByteArray = ubyteArrayOf(0x80u, 0xCCu, 0x06u, 0x02u)
+        val uByteArray = ubyteArrayOf(0xC0u, 0xE1u, 0xE4u)
         val mileageBleEntity = MileageBleEntity.fromUByteArrayOrNull(uByteArray)
-        assertEquals(34_000_000, mileageBleEntity?.mileage)
+        assertEquals(15_000_000, mileageBleEntity?.mileage)
     }
 }
