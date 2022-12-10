@@ -3,38 +3,33 @@ package com.emmanuel.pastor.simplesmartapps.tricycle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.emmanuel.pastor.simplesmartapps.tricycle.ui.nav.BottomNavigation
+import com.emmanuel.pastor.simplesmartapps.tricycle.ui.nav.NavigationGraph
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.TricycleTheme
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TricycleTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting("Android")
-                }
+                val navController = rememberNavController()
+                Scaffold(
+                    bottomBar = { BottomNavigation(navController = navController) },
+                    content = { innerPadding ->
+                        Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.padding(innerPadding)) {
+                            NavigationGraph(navController = navController)
+                        }
+                    }
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    TricycleTheme {
-        Greeting("Android")
     }
 }
