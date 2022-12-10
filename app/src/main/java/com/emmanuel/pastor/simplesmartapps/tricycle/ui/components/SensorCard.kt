@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.emmanuel.pastor.simplesmartapps.measurements.DistanceUnit
 import com.emmanuel.pastor.simplesmartapps.measurements.MeasurementUnit
-import com.emmanuel.pastor.simplesmartapps.measurements.ProportionUnit
 import com.emmanuel.pastor.simplesmartapps.tricycle.R
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.TricycleTheme
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.onSurfaceDiscrete
@@ -46,6 +46,7 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
                 )
                 Text(
                     text = unit.symbol,
+                    maxLines = 1,
                     style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onSurfaceDiscrete),
                     modifier = modifier.alignByBaseline()
                 )
@@ -60,7 +61,7 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
 fun SensorCardPreview() {
     TricycleTheme {
         Box(Modifier.padding(8.dp)) {
-            SensorCard(icon = R.drawable.ic_battery_5_7, name = "Battery", value = 75, unit = ProportionUnit.Percent)
+            SensorCard(icon = R.drawable.ic_mileage, name = "Mileage", value = 200_000_000, unit = DistanceUnit.Kilometer)
         }
     }
 }
