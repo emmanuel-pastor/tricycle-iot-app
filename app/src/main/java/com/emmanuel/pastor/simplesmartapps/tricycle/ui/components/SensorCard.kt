@@ -16,14 +16,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.emmanuel.pastor.simplesmartapps.measurements.DistanceUnit
-import com.emmanuel.pastor.simplesmartapps.measurements.MeasurementUnit
+import com.emmanuel.pastor.simplesmartapps.measurements.Measure
 import com.emmanuel.pastor.simplesmartapps.tricycle.R
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.TricycleTheme
-import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.onSurfaceDiscrete
-import java.text.NumberFormat
 
 @Composable
-fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: String, value: Number?, unit: MeasurementUnit) {
+fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: String, measure: Measure?) {
     Surface(
         shape = MaterialTheme.shapes.small,
         color = MaterialTheme.colorScheme.surface,
@@ -41,16 +39,16 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
             }
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = value?.let { NumberFormat.getInstance().format(it) } ?: "_",
+                    text = measure?.toL10nString() ?: "_",
                     style = MaterialTheme.typography.headlineLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                     modifier = Modifier.alignByBaseline()
                 )
-                Text(
-                    text = unit.symbol,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onSurfaceDiscrete),
-                    modifier = modifier.alignByBaseline()
-                )
+//                Text(
+//                    text = unit.symbol,
+//                    maxLines = 1,
+//                    style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onSurfaceDiscrete),
+//                    modifier = modifier.alignByBaseline()
+//                )
             }
         }
     }
@@ -62,7 +60,7 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
 fun SensorCardPreview() {
     TricycleTheme {
         Box(Modifier.padding(8.dp)) {
-            SensorCard(icon = R.drawable.ic_mileage, name = "Mileage", value = 200_000_000, unit = DistanceUnit.Kilometer)
+            SensorCard(icon = R.drawable.ic_mileage, name = "Mileage", measure = Measure.Distance(200_000, DistanceUnit.Kilometer))
         }
     }
 }

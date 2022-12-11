@@ -1,6 +1,7 @@
 package com.emmanuel.pastor.simplesmartapps.measurements
 
-internal fun DistanceUnit.convertTo(value: Double, to: DistanceUnit): Double {
+internal fun DistanceUnit.convertTo(inputValue: Number, to: DistanceUnit): Number {
+    val value = inputValue.toDouble()
     return when (this) {
         is DistanceUnit.Kilometer -> when (to) {
             is DistanceUnit.Kilometer -> value
@@ -40,7 +41,8 @@ internal fun DistanceUnit.convertTo(value: Double, to: DistanceUnit): Double {
     }
 }
 
-internal fun WeightUnit.convertTo(value: Double, to: WeightUnit): Double {
+internal fun WeightUnit.convertTo(inputValue: Number, to: WeightUnit): Number {
+    val value = inputValue.toDouble()
     return when (this) {
         is WeightUnit.Kilogram -> when (to) {
             is WeightUnit.Kilogram -> value
@@ -53,11 +55,11 @@ internal fun WeightUnit.convertTo(value: Double, to: WeightUnit): Double {
     }
 }
 
-internal fun SpeedUnit.convertTo(value: Double, to: SpeedUnit): Double {
+internal fun SpeedUnit.convertTo(inputValue: Number, to: SpeedUnit): Number {
+    val value = inputValue.toDouble()
     return when (this) {
         is SpeedUnit.KilometerPerHour -> when (to) {
-            is SpeedUnit.KilometerPerHour
-            -> value
+            is SpeedUnit.KilometerPerHour -> value
             is SpeedUnit.MeterPerSecond -> value * 0.277778
             is SpeedUnit.MilePerHour -> value * 0.621371
             is SpeedUnit.FootPerSecond -> value * 0.911344
@@ -85,7 +87,8 @@ internal fun SpeedUnit.convertTo(value: Double, to: SpeedUnit): Double {
     }
 }
 
-internal fun TimeUnit.convertTo(value: Double, to: TimeUnit): Double {
+internal fun TimeUnit.convertTo(inputValue: Number, to: TimeUnit): Number {
+    val value = inputValue.toDouble()
     return when (this) {
         is TimeUnit.Hour -> when (to) {
             is TimeUnit.Hour -> value
