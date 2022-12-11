@@ -20,6 +20,7 @@ import com.emmanuel.pastor.simplesmartapps.measurements.MeasurementUnit
 import com.emmanuel.pastor.simplesmartapps.tricycle.R
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.TricycleTheme
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.onSurfaceDiscrete
+import java.text.NumberFormat
 
 @Composable
 fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: String, value: Number?, unit: MeasurementUnit) {
@@ -40,7 +41,7 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
             }
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = value?.toString() ?: "_",
+                    text = value?.let { NumberFormat.getInstance().format(it) } ?: "_",
                     style = MaterialTheme.typography.headlineLarge.copy(color = MaterialTheme.colorScheme.onSurface),
                     modifier = Modifier.alignByBaseline()
                 )
