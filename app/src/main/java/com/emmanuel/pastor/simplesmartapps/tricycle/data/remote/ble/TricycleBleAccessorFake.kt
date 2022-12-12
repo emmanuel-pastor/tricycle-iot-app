@@ -4,9 +4,10 @@ import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.Batte
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.LoadBleEntity
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.MileageBleEntity
 import java.nio.ByteBuffer
+import javax.inject.Inject
 
 @ExperimentalUnsignedTypes
-class TricycleBleAccessorFake : TricycleBleAccessor {
+class TricycleBleAccessorFake @Inject constructor() : TricycleBleAccessor {
     override suspend fun getBatteryPercentage(): Result<BatteryBleEntity> {
         val randomInt = getRandomIntAsUByteArray(1, maxValue = 100)
 
@@ -31,7 +32,8 @@ class TricycleBleAccessorFake : TricycleBleAccessor {
     private fun getRandomIntAsUByteArray(numberOfBytes: Int, minValue: Int = 0, maxValue: Int = Int.MAX_VALUE): UByteArray {
         return ByteBuffer.allocate(4)
             .putInt((minValue..maxValue).random()).array()
-            .asUByteArray()
+            .asUByteArray()// MSB is at index 0
+            .also { it.reverse() } // LSB is at index 0
             .copyOfRange(0, numberOfBytes)
     }
 }
