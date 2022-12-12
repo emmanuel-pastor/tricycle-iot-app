@@ -9,8 +9,9 @@ import com.emmanuel.pastor.simplesmartapps.tricycle.domain.models.toTricycleData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class TricycleRepo(private val tricycleDsAccessor: TricycleDsAccessor, private val tricycleBleAccessor: TricycleBleAccessor) {
+class TricycleRepo @Inject constructor(private val tricycleDsAccessor: TricycleDsAccessor, private val tricycleBleAccessor: TricycleBleAccessor) {
     fun getTricycleData(): Flow<TricycleData> {
         return tricycleDsAccessor.getTricycleData().catch { e ->
             Log.e("TricycleRepo", "Error getting tricycle data from data store", e)
@@ -18,9 +19,23 @@ class TricycleRepo(private val tricycleDsAccessor: TricycleDsAccessor, private v
     }
 
     suspend fun refreshTricycleData() {
-        val batteryBleEntity = tricycleBleAccessor.getBatteryPercentage().getOrNull()
-        val loadBleEntity = tricycleBleAccessor.getLoad().getOrNull()
-        val mileageBleEntity = tricycleBleAccessor.getMileage().getOrNull()
+        val batteryBleEntity = try {
+            tricycleBleAccessor.getBatteryPercentage().getOrNull()
+        } catch (e: Exception) {
+            null
+        }
+
+        val loadBleEntity = try {
+            tricycleBleAccessor.getLoad().getOrNull()
+        } catch (e: Exception) {
+            null
+        }
+
+        val mileageBleEntity = try {
+            tricycleBleAccessor.getMileage().getOrNull()
+        } catch (e: Exception) {
+            null
+        }
 
         val hasReceivedData = batteryBleEntity != null || loadBleEntity != null || mileageBleEntity != null
         val lastUpdated = if (hasReceivedData) System.currentTimeMillis() / 1000 else null

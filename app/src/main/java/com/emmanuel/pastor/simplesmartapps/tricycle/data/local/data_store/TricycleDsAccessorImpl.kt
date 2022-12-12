@@ -2,8 +2,9 @@ package com.emmanuel.pastor.simplesmartapps.tricycle.data.local.data_store
 
 import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class TricycleDsAccessorImpl(private val dataStore: DataStore<TricycleDsEntity>) : TricycleDsAccessor {
+class TricycleDsAccessorImpl @Inject constructor(private val dataStore: DataStore<TricycleDsEntity>) : TricycleDsAccessor {
     override fun getTricycleData(): Flow<TricycleDsEntity> = dataStore.data
 
     override suspend fun updateTricycleData(tricycleDsEntity: TricycleDsEntity) {

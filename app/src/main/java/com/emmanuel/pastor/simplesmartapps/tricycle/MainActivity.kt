@@ -13,7 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.nav.BottomNavigation
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.nav.NavigationGraph
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.TricycleTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
