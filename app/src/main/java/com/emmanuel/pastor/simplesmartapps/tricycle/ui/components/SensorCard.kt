@@ -33,7 +33,8 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
                 Image(
                     imageVector = ImageVector.vectorResource(id = icon),
                     contentDescription = "$name sensor icon",
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                    modifier = Modifier.size(24.dp)
                 )
                 Text(text = name, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.primary))
             }
