@@ -3,4 +3,6 @@
     <string name="home">Home</string>
     <!-- description: Unknown sensor value -->
     <string name="unknown">Unknown</string>
+    <!-- description: Battery percentage sensor name -->
+    <string name="battery">Battery</string>
 </resources>
