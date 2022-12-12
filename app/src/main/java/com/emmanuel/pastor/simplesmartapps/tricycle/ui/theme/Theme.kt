@@ -22,7 +22,9 @@ private val DarkColorScheme = darkColorScheme(
     background = AlmostBlack,
     onBackground = Color.White,
     error = FadedErrorRed,
-    secondaryContainer = FadedBlueA15
+    secondaryContainer = FadedBlueA15,
+    onSecondaryContainer = Color.White,
+    onSurfaceVariant = FadedOffGrey
 )
 
 
@@ -35,7 +37,9 @@ private val LightColorScheme = lightColorScheme(
     background = BlueWhite,
     onBackground = Color.Black,
     error = ErrorRed,
-    secondaryContainer = MainBlueA15
+    secondaryContainer = MainBlueA15,
+    onSecondaryContainer = Color.Black,
+    onSurfaceVariant = OffGrey
 )
 
 val ColorScheme.success: Color

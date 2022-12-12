@@ -12,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.emmanuel.pastor.simplesmartapps.measurements.DistanceUnit
 import com.emmanuel.pastor.simplesmartapps.measurements.Measure
 import com.emmanuel.pastor.simplesmartapps.tricycle.R
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.TricycleTheme
@@ -39,16 +39,9 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
             }
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(
-                    text = measure?.toL10nString() ?: "_",
-                    style = MaterialTheme.typography.headlineLarge.copy(color = MaterialTheme.colorScheme.onSurface),
-                    modifier = Modifier.alignByBaseline()
+                    text = measure?.toL10nString() ?: stringResource(id = R.string.unknown),
+                    style = MaterialTheme.typography.headlineSmall.copy(color = MaterialTheme.colorScheme.onSurface)
                 )
-//                Text(
-//                    text = unit.symbol,
-//                    maxLines = 1,
-//                    style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onSurfaceDiscrete),
-//                    modifier = modifier.alignByBaseline()
-//                )
             }
         }
     }
@@ -60,7 +53,7 @@ fun SensorCard(modifier: Modifier = Modifier, @DrawableRes icon: Int, name: Stri
 fun SensorCardPreview() {
     TricycleTheme {
         Box(Modifier.padding(8.dp)) {
-            SensorCard(icon = R.drawable.ic_mileage, name = "Mileage", measure = Measure.Distance(200_000, DistanceUnit.Kilometer))
+            SensorCard(icon = R.drawable.ic_mileage, name = "Mileage", measure = null)
         }
     }
 }
