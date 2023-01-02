@@ -23,7 +23,7 @@ class TricycleBleAccessorFake @Inject constructor() : TricycleBleAccessor {
     }
 
     override suspend fun getMileage(): Result<MileageBleEntity> {
-        val randomInt = getRandomIntAsUByteArray(3, maxValue = 100_000)
+        val randomInt = getRandomIntAsUByteArray(2, maxValue = 65_535)
 
         return MileageBleEntity.fromUByteArrayOrNull(randomInt)?.let { Result.success(it) }
             ?: Result.failure(IllegalStateException("Could not get mileage"))
