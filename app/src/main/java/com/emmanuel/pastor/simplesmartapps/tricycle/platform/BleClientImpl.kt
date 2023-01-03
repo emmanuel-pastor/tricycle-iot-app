@@ -176,7 +176,6 @@ class BleClientImpl @Inject constructor(
                     super.onScanResult(callbackType, result)
                     if (continuation.isActive) {
                         val regex = Regex("E-BIKE_$tricycleSerialNumber.*")
-                        Log.d(TAG, "Found device: ${result.device.name}")
                         if (result.device.name?.matches(regex) == true) {
                             continuation.resumeWith(Result.success(result.device))
                         }
@@ -202,7 +201,6 @@ class BleClientImpl @Inject constructor(
             val setting =
                 ScanSettings.Builder()
                     .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
-                    .setCallbackType(ScanSettings.CALLBACK_TYPE_FIRST_MATCH)
                     .build()
             bluetoothLeScanner.startScan(filters, setting, scanCallback)
         }
