@@ -13,14 +13,12 @@ class TricycleBleAccessorImpl @Inject constructor(private val bleClient: BleClie
         var output: Result<BatteryBleEntity>? = null
 
         bleClient.readCharacteristic("1161", "3300").onSuccess { bytes ->
-            val value = BatteryBleEntity.fromUByteArrayOrNull(bytes.copyOfRange(1, 2).asUByteArray())
-            output = if (value != null) {
-                Result.success(value)
-            } else {
-                Result.failure(IllegalStateException("Could not parse battery percentage"))
+            output = runCatching {
+                val value = BatteryBleEntity.fromUByteArrayOrNull(bytes.copyOfRange(1, 2).asUByteArray())
+                value ?: throw IllegalStateException("Could not parse battery percentage")
             }
         }.onFailure {
-            output = Result.failure(it)
+            return Result.failure(it)
         }
 
         return output!!
@@ -34,16 +32,13 @@ class TricycleBleAccessorImpl @Inject constructor(private val bleClient: BleClie
         var output: Result<MileageBleEntity>? = null
 
         bleClient.readCharacteristic("1163", "5500").onSuccess { bytes ->
-            val value = MileageBleEntity.fromUByteArrayOrNull(
-                bytes.copyOfRange(2, 4)
-                    .asUByteArray()
-                    .also { it.reverse() }
-            )
-
-            output = if (value != null) {
-                Result.success(value)
-            } else {
-                Result.failure(IllegalStateException("Could not parse mileage"))
+            output = runCatching {
+                val value = MileageBleEntity.fromUByteArrayOrNull(
+                    bytes.copyOfRange(2, 4)
+                        .asUByteArray()
+                        .also { it.reverse() }
+                )
+                value ?: throw IllegalStateException("Could not parse mileage")
             }
         }.onFailure {
             output = Result.failure(it)
