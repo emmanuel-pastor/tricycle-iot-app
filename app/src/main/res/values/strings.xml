@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">DONK-e</string>
     <string name="home">Home</string>
+    <string name="settings">Settings</string>
     <!-- description: Unknown sensor value -->
     <string name="unknown">Unknown</string>
     <!-- description: Battery percentage sensor name -->
     <string name="battery">Battery</string>
+    <!-- description: Mileage sensor name -->
+    <string name="mileage">Mileage</string>
+    <!-- description: Connection status of the tricycle -->
+    <string name="tricycle_connected">Connected</string>
+    <!-- description: Connection status of the tricycle -->
+    <string name="tricycle_disconnected">Disconnected</string>
+    <!-- description: Tricycle reconnection button text -->
+    <string name="reconnect">Reconnect</string>
 </resources>
