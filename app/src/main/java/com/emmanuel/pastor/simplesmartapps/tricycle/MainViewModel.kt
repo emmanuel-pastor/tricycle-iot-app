@@ -26,8 +26,7 @@ class MainViewModel @Inject constructor(private val bleClient: BleClient) : View
             bleClient.openConnection("AAAAAAAAAA").onFailure {
                 Log.e("MainViewModel", "${it.message}")
             }
-            _isLoading.value = false
-        }
+        }.invokeOnCompletion { _isLoading.value = false }
     }
 }
 
