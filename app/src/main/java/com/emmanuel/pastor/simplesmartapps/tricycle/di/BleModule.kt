@@ -4,7 +4,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Context
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.TricycleBleAccessor
-import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.TricycleBleAccessorFake
+import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.TricycleBleAccessorImpl
 import com.emmanuel.pastor.simplesmartapps.tricycle.platform.BleClient
 import com.emmanuel.pastor.simplesmartapps.tricycle.platform.BleClientImpl
 import dagger.Binds
@@ -37,5 +37,5 @@ object BleModule {
 abstract class BleAccessorModule {
     @OptIn(ExperimentalUnsignedTypes::class)
     @Binds
-    abstract fun bindBleAccessor(bleAccessor: TricycleBleAccessorFake): TricycleBleAccessor
+    abstract fun bindBleAccessor(bleAccessor: TricycleBleAccessorImpl): TricycleBleAccessor
 }

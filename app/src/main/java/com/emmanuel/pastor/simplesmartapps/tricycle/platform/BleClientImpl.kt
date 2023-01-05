@@ -99,7 +99,7 @@ class BleClientImpl @Inject constructor(
             actionChannel.consumeEach { action ->
                 when (action) {
                     is GattAction.ReadCharacteristic -> {
-                        Log.d(TAG, "Read Action received")
+                        Log.d(TAG, "Read Action received for service:${action.serviceUuid} char:${action.characteristicUuid}")
                         readCharacteristicAction(action.serviceUuid, action.characteristicUuid)
                         Log.d(TAG, "Waiting for ACK")
                         ackChannel.receive()
@@ -130,11 +130,8 @@ class BleClientImpl @Inject constructor(
 
         // Read an encrypted characteristic so bonding is started automatically by Android
         readCharacteristic(GattServices.STATUS, GattCharacteristics.GET_BATTERY_STATE)
-            .onSuccess {
-                Log.d(TAG, "Characteristic read: ${it.contentToString()}")
-            }
             .onFailure {
-                Log.d(TAG, it.toString())
+                throw it
             }
     }
 
@@ -215,7 +212,7 @@ class BleClientImpl @Inject constructor(
     }
 
     override suspend fun readCharacteristic(serviceUuid: String, characteristicUuid: String): Result<ByteArray> {
-        Log.d(TAG, "Sending Read Action")
+        Log.d(TAG, "Sending Read Action for service: $serviceUuid char: $characteristicUuid")
         actionChannel.trySend(GattAction.ReadCharacteristic(serviceUuid, characteristicUuid))
         Log.d(TAG, "Waiting for Read Event")
         val event = eventChannel.receive()
