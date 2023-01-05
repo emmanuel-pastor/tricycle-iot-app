@@ -2,6 +2,8 @@ package com.emmanuel.pastor.simplesmartapps.tricycle.data.local.data_store
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.protobuf.ProtoBuf
@@ -23,8 +25,10 @@ object TricycleProtoBufSerializer : Serializer<TricycleDsEntity> {
     }
 
     override suspend fun writeTo(t: TricycleDsEntity, output: OutputStream) {
-        output.write(
-            ProtoBuf.encodeToByteArray(TricycleDsEntity.serializer(), t)
-        )
+        withContext(Dispatchers.IO) {
+            output.write(
+                ProtoBuf.encodeToByteArray(TricycleDsEntity.serializer(), t)
+            )
+        }
     }
 }
