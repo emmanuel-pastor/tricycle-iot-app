@@ -3,6 +3,7 @@ package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.BatteryBleEntity
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.LoadBleEntity
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.MileageBleEntity
+import com.emmanuel.pastor.simplesmartapps.tricycle.domain.models.TricycleGatt
 import com.emmanuel.pastor.simplesmartapps.tricycle.platform.BleClient
 import javax.inject.Inject
 
@@ -12,7 +13,7 @@ class TricycleBleAccessorImpl @Inject constructor(private val bleClient: BleClie
     override suspend fun getBatteryPercentage(): Result<BatteryBleEntity> {
         var output: Result<BatteryBleEntity>? = null
 
-        bleClient.readCharacteristic("1161", "3300").onSuccess { bytes ->
+        bleClient.readCharacteristic(TricycleGatt.Services.STATUS, TricycleGatt.Characteristics.BATTERY_STATE).onSuccess { bytes ->
             output = runCatching {
                 val value = BatteryBleEntity.fromUByteArrayOrNull(bytes.copyOfRange(1, 2).asUByteArray())
                 value ?: throw IllegalStateException("Could not parse battery percentage")
@@ -31,7 +32,7 @@ class TricycleBleAccessorImpl @Inject constructor(private val bleClient: BleClie
     override suspend fun getMileage(): Result<MileageBleEntity> {
         var output: Result<MileageBleEntity>? = null
 
-        bleClient.readCharacteristic("1163", "5500").onSuccess { bytes ->
+        bleClient.readCharacteristic(TricycleGatt.Services.DATA, TricycleGatt.Characteristics.MOVEMENT_INFO).onSuccess { bytes ->
             output = runCatching {
                 val value = MileageBleEntity.fromUByteArrayOrNull(
                     bytes.copyOfRange(2, 4)

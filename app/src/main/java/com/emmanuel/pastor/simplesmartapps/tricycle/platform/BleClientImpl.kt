@@ -10,6 +10,7 @@ import android.os.ParcelUuid
 import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.emmanuel.pastor.simplesmartapps.tricycle.domain.models.TricycleGatt
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -26,14 +27,6 @@ class BleClientImpl @Inject constructor(
 ) : BleClient {
     companion object {
         private const val TAG = "BleClient"
-
-        private object GattServices {
-            const val STATUS = "1161"
-        }
-
-        private object GattCharacteristics {
-            const val GET_BATTERY_STATE = "3300"
-        }
     }
 
     private sealed class GattAction {
@@ -129,7 +122,7 @@ class BleClientImpl @Inject constructor(
         Log.d(TAG, "Services discovered")
 
         // Read an encrypted characteristic so bonding is started automatically by Android
-        readCharacteristic(GattServices.STATUS, GattCharacteristics.GET_BATTERY_STATE)
+        readCharacteristic(TricycleGatt.Services.STATUS, TricycleGatt.Characteristics.BATTERY_STATE)
             .onFailure {
                 throw it
             }
@@ -172,7 +165,7 @@ class BleClientImpl @Inject constructor(
                 override fun onScanResult(callbackType: Int, result: ScanResult) {
                     super.onScanResult(callbackType, result)
                     if (continuation.isActive) {
-                        val regex = Regex("E-BIKE_$tricycleSerialNumber.*")
+                        val regex = Regex("eCtrl$tricycleSerialNumber.*")
                         if (result.device.name?.matches(regex) == true) {
                             continuation.resumeWith(Result.success(result.device))
                         }
@@ -187,7 +180,7 @@ class BleClientImpl @Inject constructor(
                 }
             }
 
-            val statusServiceUuidAndroid = ParcelUuid.fromString("0000${GattServices.STATUS}-0000-1000-8000-00805f9b34fb")
+            val statusServiceUuidAndroid = ParcelUuid.fromString("0000${TricycleGatt.Services.SCANNING}-0000-1000-8000-00805f9b34fb")
             val filters =
                 mutableListOf<ScanFilter>(
                     ScanFilter.Builder()
