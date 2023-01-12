@@ -5,33 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.emmanuel.pastor.simplesmartapps.tricycle.domain.TricycleRepo
 import com.emmanuel.pastor.simplesmartapps.tricycle.domain.models.TricycleData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val tricycleRepo: TricycleRepo) : ViewModel() {
-    init {
-        refreshTricycleData()
-    }
-
-    val sensorSectionState: StateFlow<SensorSectionState> = tricycleRepo.getTricycleData().map {
-        flowOf(SensorSectionState.Success(it))
-    }.flatMapLatest { it }.stateIn(
+    val sensorSectionState: StateFlow<SensorSectionState> = tricycleRepo.fetchTricycleData().map {
+        SensorSectionState.Success(it)
+    }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = SensorSectionState.Loading
     )
-
-    private fun refreshTricycleData() = viewModelScope.launch {
-        while (true) {
-            tricycleRepo.refreshTricycleData()
-            delay(10_000)
-        }
-    }
 }
 
 sealed interface SensorSectionState {
