@@ -43,3 +43,12 @@ internal fun Measure.Time.toAndroidMeasure(value: Number): android.icu.util.Meas
     }
     return android.icu.util.Measure(value, androidUnit)
 }
+
+internal fun Measure.Temperature.toAndroidMeasure(value: Number): android.icu.util.Measure {
+    val androidUnit = when (unit) {
+        is TemperatureUnit.Celsius -> android.icu.util.MeasureUnit.CELSIUS
+        is TemperatureUnit.Fahrenheit -> android.icu.util.MeasureUnit.FAHRENHEIT
+        is TemperatureUnit.Kelvin -> android.icu.util.MeasureUnit.KELVIN
+    }
+    return android.icu.util.Measure(value, androidUnit)
+}

@@ -107,3 +107,24 @@ internal fun TimeUnit.convertTo(inputValue: Number, to: TimeUnit): Number {
         }
     }
 }
+
+internal fun TemperatureUnit.convertTo(inputValue: Number, to: TemperatureUnit): Number {
+    val value = inputValue.toDouble()
+    return when (this) {
+        is TemperatureUnit.Celsius -> when (to) {
+            is TemperatureUnit.Celsius -> value
+            is TemperatureUnit.Fahrenheit -> value * 1.8 + 32
+            is TemperatureUnit.Kelvin -> value + 273.15
+        }
+        is TemperatureUnit.Fahrenheit -> when (to) {
+            is TemperatureUnit.Celsius -> (value - 32) / 1.8
+            is TemperatureUnit.Fahrenheit -> value
+            is TemperatureUnit.Kelvin -> (value + 459.67) * 5 / 9
+        }
+        is TemperatureUnit.Kelvin -> when (to) {
+            is TemperatureUnit.Celsius -> value - 273.15
+            is TemperatureUnit.Fahrenheit -> (value - 273.15) * 1.8 + 32
+            is TemperatureUnit.Kelvin -> value
+        }
+    }
+}

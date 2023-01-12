@@ -42,6 +42,12 @@ sealed class Measure : IMeasure {
         override val value = ratio.coerceIn(0.0, 1.0)
     }
 
+    data class Temperature(override val value: Number, override val unit: TemperatureUnit) : Measure() {
+        fun convertTo(newUnit: TemperatureUnit): Temperature {
+            return Temperature(value = unit.convertTo(value, newUnit), unit = newUnit)
+        }
+    }
+
     fun toL10nString(formatWidth: FormatWidth = FormatWidth.SHORT): String {
         val locale = Locale.getDefault()
         val format = MeasureFormat.getInstance(locale, formatWidth)
@@ -53,6 +59,7 @@ sealed class Measure : IMeasure {
             is Proportion -> {
                 NumberFormat.getPercentInstance().format(value)
             }
+            is Temperature -> format.format(this.toAndroidMeasure(value))
         }
     }
 }
