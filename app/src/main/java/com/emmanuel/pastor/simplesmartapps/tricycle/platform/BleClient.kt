@@ -26,7 +26,7 @@ interface BleClient {
     /**
      * @param serviceUuid 4 hex characters representing the 16 bits UUID that identifies the service
      * @param characteristicUuid 4 hex characters representing the 16 bits UUID that identifies the characteristic
-     * @throws IllegalStateException on internal errors
+     * @throws IllegalStateException on internal errors like device not connected.
      * @throws RuntimeException if the characteristic could not be read
      */
     suspend fun readCharacteristic(serviceUuid: String, characteristicUuid: String): Result<ByteArray>

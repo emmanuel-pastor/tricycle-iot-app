@@ -205,6 +205,8 @@ class BleClientImpl @Inject constructor(
     }
 
     override suspend fun readCharacteristic(serviceUuid: String, characteristicUuid: String): Result<ByteArray> {
+        if (!_isConnectedStateFlow.value) return Result.failure(IllegalStateException("Not connected to a device!"))
+
         Log.d(TAG, "Sending Read Action for service: $serviceUuid char: $characteristicUuid")
         actionChannel.trySend(GattAction.ReadCharacteristic(serviceUuid, characteristicUuid))
         Log.d(TAG, "Waiting for Read Event")
