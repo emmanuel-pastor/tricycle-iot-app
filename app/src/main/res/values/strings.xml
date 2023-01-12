@@ -1,4 +1,7 @@
 <resources>
+    <!-- Notification channel IDs -->
+    <string name="notif_channel_id_tricycle_service" translatable="false">com.emmanuel.pastor.simplesmartapps.tricycle.tricycle_service_channel</string>
+
     <string name="app_name">DONK-e</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
@@ -14,4 +17,12 @@
     <string name="tricycle_disconnected">Disconnected</string>
     <!-- description: Tricycle reconnection button text -->
     <string name="reconnect">Reconnect</string>
+    <!-- description: Title of the section where all sensor value are displayed -->
+    <string name="sensors_section_title">Sensors</string>
+    <!-- description: Name of the notification channel grouping notifications about services -->
+    <string name="notif_channel_name_services">Services</string>
+    <!-- description: Description of the "Services" notification channel -->
+    <string name="notif_channel_description_tricycle_service">Tasks running in the background</string>
+    <!-- description: Content of the notification indicating that the connection service is running -->
+    <string name="notif_content_tricycle_service">Connection service</string>
 </resources>
