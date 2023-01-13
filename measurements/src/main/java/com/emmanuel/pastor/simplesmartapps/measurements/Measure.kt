@@ -15,11 +15,19 @@ sealed class Measure : IMeasure {
         fun convertTo(newUnit: DistanceUnit): Distance {
             return Distance(value = unit.convertTo(value, newUnit), unit = newUnit)
         }
+
+        operator fun compareTo(other: Distance): Int {
+            return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
+        }
     }
 
     data class Weight(override val value: Number, override val unit: WeightUnit) : Measure() {
         fun convertTo(newUnit: WeightUnit): Weight {
             return Weight(value = unit.convertTo(value, newUnit), unit = newUnit)
+        }
+
+        operator fun compareTo(other: Weight): Int {
+            return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
         }
     }
 
@@ -27,11 +35,19 @@ sealed class Measure : IMeasure {
         fun convertTo(newUnit: SpeedUnit): Speed {
             return Speed(value = unit.convertTo(value, newUnit), unit = newUnit)
         }
+
+        operator fun compareTo(other: Speed): Int {
+            return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
+        }
     }
 
     data class Time(override val value: Number, override val unit: TimeUnit) : Measure() {
         fun convertTo(newUnit: TimeUnit): Time {
             return Time(value = unit.convertTo(value, newUnit), unit = newUnit)
+        }
+
+        operator fun compareTo(other: Time): Int {
+            return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
         }
     }
 
@@ -40,11 +56,19 @@ sealed class Measure : IMeasure {
      */
     data class Proportion(val ratio: Double, override val unit: ProportionUnit) : Measure() {
         override val value = ratio.coerceIn(0.0, 1.0)
+
+        operator fun compareTo(other: Proportion): Int {
+            return value.compareTo(other.value)
+        }
     }
 
     data class Temperature(override val value: Number, override val unit: TemperatureUnit) : Measure() {
         fun convertTo(newUnit: TemperatureUnit): Temperature {
             return Temperature(value = unit.convertTo(value, newUnit), unit = newUnit)
+        }
+
+        operator fun compareTo(other: Temperature): Int {
+            return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
         }
     }
 
