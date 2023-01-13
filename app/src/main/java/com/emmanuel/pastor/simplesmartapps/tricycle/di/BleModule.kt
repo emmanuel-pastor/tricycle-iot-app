@@ -35,7 +35,6 @@ object BleModule {
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class BleAccessorModule {
-    @OptIn(ExperimentalUnsignedTypes::class)
     @Binds
     abstract fun bindBleAccessor(bleAccessor: TricycleBleAccessorImpl): TricycleBleAccessor
 }

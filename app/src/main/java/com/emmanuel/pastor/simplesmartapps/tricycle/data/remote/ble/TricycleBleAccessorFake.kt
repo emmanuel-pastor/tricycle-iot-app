@@ -1,17 +1,15 @@
 package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble
 
-import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.BatteryBleEntity
-import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.LoadBleEntity
-import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.MileageBleEntity
+import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.*
 import java.nio.ByteBuffer
 import javax.inject.Inject
 
 @ExperimentalUnsignedTypes
 class TricycleBleAccessorFake @Inject constructor() : TricycleBleAccessor {
-    override suspend fun getBatteryPercentage(): Result<BatteryBleEntity> {
+    override suspend fun getBatteryPercentage(): Result<BatteryPercentageBleEntity> {
         val randomInt = getRandomIntAsUByteArray(1, maxValue = 100)
 
-        return BatteryBleEntity.fromUByteArrayOrNull(randomInt)?.let { Result.success(it) }
+        return BatteryPercentageBleEntity.fromUByteArrayOrNull(randomInt)?.let { Result.success(it) }
             ?: Result.failure(IllegalStateException("Could not get battery percentage"))
     }
 
@@ -27,6 +25,22 @@ class TricycleBleAccessorFake @Inject constructor() : TricycleBleAccessor {
 
         return MileageBleEntity.fromUByteArrayOrNull(randomInt)?.let { Result.success(it) }
             ?: Result.failure(IllegalStateException("Could not get mileage"))
+    }
+
+    // In 0.1 degrees Kelvin
+    override suspend fun getBatteryTemperature(): Result<BatteryTemperatureBleEntity> {
+        val randomInt = getRandomIntAsUByteArray(2, minValue = 2680, maxValue = 3330)
+
+        return BatteryTemperatureBleEntity.fromUByteArrayOrNull(randomInt)?.let { Result.success(it) }
+            ?: Result.failure(IllegalStateException("Could not get battery temperature"))
+    }
+
+    // In Celsius
+    override suspend fun getMotorTemperature(): Result<MotorTemperatureBleEntity> {
+        val randomInt = getRandomIntAsUByteArray(1, maxValue = 180)
+
+        return MotorTemperatureBleEntity.fromUByteArrayOrNull(randomInt)?.let { Result.success(it) }
+            ?: Result.failure(IllegalStateException("Could not get motor temperature"))
     }
 
     private fun getRandomIntAsUByteArray(numberOfBytes: Int, minValue: Int = 0, maxValue: Int = Int.MAX_VALUE): UByteArray {

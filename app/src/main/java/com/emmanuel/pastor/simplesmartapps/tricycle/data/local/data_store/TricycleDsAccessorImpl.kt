@@ -13,6 +13,8 @@ class TricycleDsAccessorImpl @Inject constructor(private val dataStore: DataStor
                 batteryPercentage = tricycleDsEntity.batteryPercentage ?: it.batteryPercentage,
                 load = tricycleDsEntity.load ?: it.load,
                 mileage = tricycleDsEntity.mileage ?: it.mileage,
+                batteryTemperature = tricycleDsEntity.batteryTemperature ?: it.batteryTemperature,
+                motorTemperature = tricycleDsEntity.motorTemperature ?: it.motorTemperature,
                 lastUpdated = tricycleDsEntity.lastUpdated ?: it.lastUpdated
             )
         }

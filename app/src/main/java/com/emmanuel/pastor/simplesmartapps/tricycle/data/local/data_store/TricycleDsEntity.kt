@@ -4,10 +4,17 @@ import kotlinx.serialization.Serializable
 
 
 @Serializable
-data class TricycleDsEntity(val batteryPercentage: Int?, val load: Int?, val mileage: Int?, val lastUpdated: Long?) {
+data class TricycleDsEntity(
+    val batteryPercentage: Int?,
+    val load: Int?,
+    val mileage: Int?,
+    val batteryTemperature: Int?,
+    val motorTemperature: Int?,
+    val lastUpdated: Long?
+) {
     companion object {
-        fun empty() = TricycleDsEntity(null, null, null, null)
+        fun empty() = TricycleDsEntity(null, null, null, null, null, null)
     }
 
-    fun isEmpty() = batteryPercentage == null && load == null && mileage == null && lastUpdated == null
+    fun isEmpty() = this == empty()
 }

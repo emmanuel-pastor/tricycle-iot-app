@@ -9,7 +9,7 @@ class BleEntitiesTest {
     @Test
     fun `create BatteryBleEntity from unsigned byte array`() = runBlocking {
         val uByteArray = ubyteArrayOf(0x50u)
-        val batteryBleEntity = BatteryBleEntity.fromUByteArrayOrNull(uByteArray)
+        val batteryBleEntity = BatteryPercentageBleEntity.fromUByteArrayOrNull(uByteArray)
         assertEquals(80, batteryBleEntity?.percentage)
     }
 

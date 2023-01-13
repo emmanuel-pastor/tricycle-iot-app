@@ -19,16 +19,34 @@ class TricycleRepo @Inject constructor(private val tricycleDsAccessor: TricycleD
     }
 
     suspend fun refreshTricycleData() {
-        val batteryBleEntity = tricycleBleAccessor.getBatteryPercentage().getOrNull()
+        val batteryPercentageBleEntity = tricycleBleAccessor.getBatteryPercentage().getOrNull()
 
         val loadBleEntity = tricycleBleAccessor.getLoad().getOrNull()
 
         val mileageBleEntity = tricycleBleAccessor.getMileage().getOrNull()
 
-        val hasReceivedData = batteryBleEntity != null || loadBleEntity != null || mileageBleEntity != null
+        val batteryTemperatureBleEntity = tricycleBleAccessor.getBatteryTemperature().getOrNull()
+
+        val motorTemperatureBleEntity = tricycleBleAccessor.getMotorTemperature().getOrNull()
+
+        val hasReceivedData =
+            listOf(
+                batteryPercentageBleEntity,
+                loadBleEntity,
+                mileageBleEntity,
+                batteryTemperatureBleEntity,
+                motorTemperatureBleEntity
+            ).any { it != null }
         val lastUpdated = if (hasReceivedData) System.currentTimeMillis() / 1000 else null
 
-        BleTricycleDataMapper.toDsEntity(batteryBleEntity, loadBleEntity, mileageBleEntity, lastUpdated).also {
+        BleTricycleDataMapper.toDsEntity(
+            batteryPercentageBleEntity,
+            loadBleEntity,
+            mileageBleEntity,
+            batteryTemperatureBleEntity,
+            motorTemperatureBleEntity,
+            lastUpdated
+        ).also {
             tricycleDsAccessor.updateTricycleData(it)
         }
     }

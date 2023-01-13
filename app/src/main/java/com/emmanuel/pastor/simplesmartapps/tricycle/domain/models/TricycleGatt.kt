@@ -10,6 +10,8 @@ object TricycleGatt {
     object Characteristics {
         // Service: STATUS
         const val BATTERY_STATE = "3300"
+        const val BATTERY_DIAGNOSTIC = "3301"
+        const val MOTOR_DIAGNOSTIC = "3302"
 
         // Service: DATA
         const val MOVEMENT_INFO = "5500"
