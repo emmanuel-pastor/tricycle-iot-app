@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.emmanuel.pastor.simplesmartapps.measurements.TemperatureUnit
 import com.emmanuel.pastor.simplesmartapps.tricycle.R
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.components.BatteryCard
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.components.SectionLabel
@@ -52,6 +53,18 @@ fun HomeScreen() {
                         icon = R.drawable.ic_mileage,
                         name = stringResource(R.string.mileage),
                         measure = data.mileage,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    SensorCard(
+                        icon = R.drawable.ic_battery_temp,
+                        name = stringResource(R.string.battery_temp),
+                        measure = data.batteryTemperature?.convertTo(TemperatureUnit.Celsius),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    SensorCard(
+                        icon = R.drawable.ic_motor_temp,
+                        name = stringResource(R.string.motor_temp),
+                        measure = data.motorTemperature,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

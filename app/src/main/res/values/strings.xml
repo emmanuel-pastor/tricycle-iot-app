@@ -11,6 +11,10 @@
     <string name="battery">Battery</string>
     <!-- description: Mileage sensor name -->
     <string name="mileage">Mileage</string>
+    <!-- description: Battery temperature sensor name -->
+    <string name="battery_temp">Battery Temperature</string>
+    <!-- description: Motor temperature sensor name -->
+    <string name="motor_temp">Motor Temperature</string>
     <!-- description: Connection status of the tricycle -->
     <string name="tricycle_connected">Connected</string>
     <!-- description: Connection status of the tricycle -->
