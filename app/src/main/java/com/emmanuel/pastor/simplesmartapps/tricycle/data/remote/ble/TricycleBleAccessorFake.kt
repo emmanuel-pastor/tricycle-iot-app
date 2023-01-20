@@ -43,6 +43,8 @@ class TricycleBleAccessorFake @Inject constructor() : TricycleBleAccessor {
             ?: Result.failure(IllegalStateException("Could not get motor temperature"))
     }
 
+    override suspend fun setWheelDiameter(diameter: Int): Result<Unit> = Result.success(Unit)
+
     private fun getRandomIntAsUByteArray(numberOfBytes: Int, minValue: Int = 0, maxValue: Int = Int.MAX_VALUE): UByteArray {
         return ByteBuffer.allocate(4)
             .putInt((minValue..maxValue).random()).array()

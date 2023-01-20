@@ -50,4 +50,8 @@ class TricycleRepo @Inject constructor(private val tricycleDsAccessor: TricycleD
             tricycleDsAccessor.updateTricycleData(it)
         }
     }
+
+    suspend fun setWheelDiameter(diameter: Int): Result<Unit> {
+        return tricycleBleAccessor.setWheelDiameter(diameter)
+    }
 }

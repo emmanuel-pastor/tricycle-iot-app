@@ -1,5 +1,6 @@
 package com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble
 
+import android.util.Log
 import com.emmanuel.pastor.simplesmartapps.tricycle.data.remote.ble.models.*
 import com.emmanuel.pastor.simplesmartapps.tricycle.domain.models.TricycleGatt
 import com.emmanuel.pastor.simplesmartapps.tricycle.platform.BleClient
@@ -72,6 +73,33 @@ class TricycleBleAccessorImpl @Inject constructor(private val bleClient: BleClie
             output = runCatching {
                 val value = MotorTemperatureBleEntity.fromUByteArrayOrNull(bytes.copyOfRange(7, 8).asUByteArray())
                 value ?: throw IllegalStateException("Could not parse motor temperature")
+            }
+        }.onFailure {
+            output = Result.failure(it)
+        }
+
+        return output!!
+    }
+
+    override suspend fun setWheelDiameter(diameter: Int): Result<Unit> {
+        assert(diameter in 1..255)
+        var output: Result<Unit>? = null
+
+        bleClient.readCharacteristic(TricycleGatt.Services.SETTINGS, TricycleGatt.Characteristics.SET_BIKE_SETTINGS).onSuccess {
+            output = runCatching {
+                Log.d("TricycleBleAccessorImpl", "read wheel diameter: ${it.contentToString()}")
+                val bikeSettings = it.toMutableList()
+                bikeSettings[1] = diameter.toByte()
+                bleClient.writeCharacteristic(
+                    TricycleGatt.Services.SETTINGS,
+                    TricycleGatt.Characteristics.SET_BIKE_SETTINGS,
+                    bikeSettings.toByteArray()
+                ).onSuccess {
+                    Log.d("TricycleBleAccessorImpl", "successfully wrote bike settings: ${bikeSettings.toByteArray().contentToString()}")
+                    output = Result.success(Unit)
+                }.onFailure {
+                    output = Result.failure(it)
+                }
             }
         }.onFailure {
             output = Result.failure(it)

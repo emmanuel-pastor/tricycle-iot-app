@@ -6,6 +6,7 @@ import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
+import android.os.Build
 import android.os.ParcelUuid
 import android.util.Log
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -31,11 +32,13 @@ class BleClientImpl @Inject constructor(
 
     private sealed class GattAction {
         data class ReadCharacteristic(val serviceUuid: String, val characteristicUuid: String) : GattAction()
+        data class WriteCharacteristic(val serviceUuid: String, val characteristicUuid: String, val payload: ByteArray) : GattAction()
     }
 
     private sealed class GattEvent {
         object ServicesDiscovered : GattEvent()
         data class CharacteristicRead(val result: Result<ByteArray>) : GattEvent()
+        data class CharacteristicWrite(val result: Result<Unit>) : GattEvent()
     }
 
     private val bluetoothLeScanner = adapter.bluetoothLeScanner
@@ -85,6 +88,29 @@ class BleClientImpl @Inject constructor(
                 }
             }
         }
+
+        override fun onCharacteristicWrite(gatt: BluetoothGatt?, characteristic: BluetoothGattCharacteristic?, status: Int) {
+            with(characteristic) {
+                when (status) {
+                    BluetoothGatt.GATT_SUCCESS -> {
+                        Log.i(TAG, "Wrote to characteristic ${this?.uuid}")
+                        eventChannel.trySend(GattEvent.CharacteristicWrite(Result.success(Unit)))
+                    }
+                    BluetoothGatt.GATT_INVALID_ATTRIBUTE_LENGTH -> {
+                        Log.e(TAG, "Write exceeded connection ATT MTU!")
+                        eventChannel.trySend(GattEvent.CharacteristicWrite(Result.failure(RuntimeException("Write exceeded connection ATT MTU!"))))
+                    }
+                    BluetoothGatt.GATT_WRITE_NOT_PERMITTED -> {
+                        Log.e(TAG, "Write not permitted for ${this?.uuid}!")
+                        eventChannel.trySend(GattEvent.CharacteristicWrite(Result.failure(RuntimeException("Write not permitted for ${this?.uuid}!"))))
+                    }
+                    else -> {
+                        Log.e(TAG, "Characteristic write failed for ${this?.uuid}, error: $status")
+                        eventChannel.trySend(GattEvent.CharacteristicWrite(Result.failure(RuntimeException("Characteristic write failed for ${this?.uuid}, error: $status"))))
+                    }
+                }
+            }
+        }
     }
 
     init {
@@ -94,6 +120,13 @@ class BleClientImpl @Inject constructor(
                     is GattAction.ReadCharacteristic -> {
                         Log.d(TAG, "Read Action received for service:${action.serviceUuid} char:${action.characteristicUuid}")
                         readCharacteristicAction(action.serviceUuid, action.characteristicUuid)
+                        Log.d(TAG, "Waiting for ACK")
+                        ackChannel.receive()
+                        Log.d(TAG, "ACK received")
+                    }
+                    is GattAction.WriteCharacteristic -> {
+                        Log.d(TAG, "Write Action received for service:${action.serviceUuid} char:${action.characteristicUuid}")
+                        writeCharacteristicAction(action.serviceUuid, action.characteristicUuid, action.payload)
                         Log.d(TAG, "Waiting for ACK")
                         ackChannel.receive()
                         Log.d(TAG, "ACK received")
@@ -237,6 +270,51 @@ class BleClientImpl @Inject constructor(
 
     override fun subscribeToCharacteristic(uuid: String): Flow<ByteArray> {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun writeCharacteristic(serviceUuid: String, characteristicUuid: String, payload: ByteArray): Result<Unit> {
+        if (!_isConnectedStateFlow.value) return Result.failure(IllegalStateException("Not connected to a device!"))
+
+        Log.d(TAG, "Sending Write Action for service: $serviceUuid char: $characteristicUuid")
+        actionChannel.trySend(GattAction.WriteCharacteristic(serviceUuid, characteristicUuid, payload))
+        Log.d(TAG, "Waiting for Write Event")
+        val event = eventChannel.receive()
+        Log.d(TAG, "Write Event received")
+        Log.d(TAG, "Sending ACK")
+        ackChannel.trySend(true)
+
+        return if (event is GattEvent.CharacteristicWrite) {
+            event.result
+        } else {
+            Result.failure(IllegalStateException("Event channel is de-synchronized with Action channel"))
+        }
+    }
+
+    private fun writeCharacteristicAction(serviceUuid: String, characteristicUuid: String, payload: ByteArray) {
+        val serviceUuidAndroid = UUID.fromString("0000$serviceUuid-0000-1000-8000-00805f9b34fb")
+        val characteristicUuidAndroid = UUID.fromString("0000$characteristicUuid-0000-1000-8000-00805f9b34fb")
+        val characteristic: BluetoothGattCharacteristic? = gatt?.getService(serviceUuidAndroid)?.getCharacteristic(characteristicUuidAndroid)
+
+        if (characteristic != null && gatt != null) {
+            val writeType = BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                gatt!!.writeCharacteristic(characteristic, payload, writeType)
+                Log.d(TAG, "Launched write Action")
+            } else {
+                characteristic.value = payload
+                characteristic.writeType = writeType
+                gatt!!.writeCharacteristic(characteristic)
+            }
+        } else {
+            Log.d(TAG, "Could not launch write Action: characteristic = $characteristic, gatt = $gatt")
+            eventChannel.trySend(
+                GattEvent.CharacteristicWrite(
+                    Result.failure(
+                        RuntimeException("Could not start write characteristic action")
+                    )
+                )
+            )
+        }
     }
 
     private val _isConnectedStateFlow = MutableStateFlow(false)

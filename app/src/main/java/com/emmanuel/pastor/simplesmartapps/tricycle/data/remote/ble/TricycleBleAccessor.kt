@@ -12,4 +12,10 @@ interface TricycleBleAccessor {
     suspend fun getBatteryTemperature(): Result<BatteryTemperatureBleEntity>
 
     suspend fun getMotorTemperature(): Result<MotorTemperatureBleEntity>
+
+    /**
+     * @param diameter in centimeters
+     * @throws AssertionError if the value is not in the range [0, 255]
+     */
+    suspend fun setWheelDiameter(diameter: Int): Result<Unit>
 }

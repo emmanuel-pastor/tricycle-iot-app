@@ -33,5 +33,7 @@ interface BleClient {
 
     fun subscribeToCharacteristic(uuid: String): Flow<ByteArray>
 
+    suspend fun writeCharacteristic(serviceUuid: String, characteristicUuid: String, payload: ByteArray): Result<Unit>
+
     val isConnectedStateFlow: StateFlow<Boolean>
 }
