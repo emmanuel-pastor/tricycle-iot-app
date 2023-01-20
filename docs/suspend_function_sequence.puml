@@ -1,0 +1,9 @@
+@startuml
+Coroutine -> BleClient: readCharacteristic()
+activate BleClient
+note over Coroutine: Suspended
+note over BleClient: Doing work
+BleClient --> Coroutine: result
+deactivate BleClient
+note over Coroutine: Resumed
+@enduml

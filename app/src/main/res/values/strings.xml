@@ -1,6 +1,7 @@
 <resources>
     <!-- Notification channel IDs -->
     <string name="notif_channel_id_tricycle_service" translatable="false">com.emmanuel.pastor.simplesmartapps.tricycle.tricycle_service_channel</string>
+    <string name="notif_channel_id_warning" translatable="false">com.emmanuel.pastor.simplesmartapps.tricycle.warning</string>
 
     <string name="app_name">DONK-e</string>
     <string name="home">Home</string>
@@ -29,4 +30,8 @@
     <string name="notif_channel_description_tricycle_service">Tasks running in the background</string>
     <!-- description: Content of the notification indicating that the connection service is running -->
     <string name="notif_content_tricycle_service">Connection service</string>
+    <!-- description: Name of the notification channel grouping warning notifications -->
+    <string name="notif_channel_name_warnings">Warnings</string>
+    <!-- description: Description of the "Warnings" notification channel -->
+    <string name="notif_channel_description_warnings">Warnings about your tricycle status</string>
 </resources>
