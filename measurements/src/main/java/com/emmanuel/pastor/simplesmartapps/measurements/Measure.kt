@@ -19,6 +19,22 @@ sealed class Measure : IMeasure {
         operator fun compareTo(other: Distance): Int {
             return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
         }
+
+        operator fun plus(other: Distance): Distance {
+            return Distance(value = value.toDouble() + other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun minus(other: Distance): Distance {
+            return Distance(value = value.toDouble() - other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun times(other: Distance): Distance {
+            return Distance(value = value.toDouble() * other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun div(other: Distance): Double {
+            return value.toDouble() / other.convertTo(unit).value.toDouble()
+        }
     }
 
     data class Weight(override val value: Number, override val unit: WeightUnit) : Measure() {
@@ -28,6 +44,22 @@ sealed class Measure : IMeasure {
 
         operator fun compareTo(other: Weight): Int {
             return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
+        }
+
+        operator fun plus(other: Weight): Weight {
+            return Weight(value = value.toDouble() + other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun minus(other: Weight): Weight {
+            return Weight(value = value.toDouble() - other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun times(other: Weight): Weight {
+            return Weight(value = value.toDouble() * other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun div(other: Weight): Double {
+            return value.toDouble() / other.convertTo(unit).value.toDouble()
         }
     }
 
@@ -39,6 +71,22 @@ sealed class Measure : IMeasure {
         operator fun compareTo(other: Speed): Int {
             return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
         }
+
+        operator fun plus(other: Speed): Speed {
+            return Speed(value = value.toDouble() + other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun minus(other: Speed): Speed {
+            return Speed(value = value.toDouble() - other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun times(other: Speed): Speed {
+            return Speed(value = value.toDouble() * other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun div(other: Speed): Double {
+            return value.toDouble() / other.convertTo(unit).value.toDouble()
+        }
     }
 
     data class Time(override val value: Number, override val unit: TimeUnit) : Measure() {
@@ -48,6 +96,22 @@ sealed class Measure : IMeasure {
 
         operator fun compareTo(other: Time): Int {
             return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
+        }
+
+        operator fun plus(other: Time): Time {
+            return Time(value = value.toDouble() + other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun minus(other: Time): Time {
+            return Time(value = value.toDouble() - other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun times(other: Time): Time {
+            return Time(value = value.toDouble() * other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun div(other: Time): Double {
+            return value.toDouble() / other.convertTo(unit).value.toDouble()
         }
     }
 
@@ -69,6 +133,22 @@ sealed class Measure : IMeasure {
 
         operator fun compareTo(other: Temperature): Int {
             return value.toDouble().compareTo(other.convertTo(unit).value.toDouble())
+        }
+
+        operator fun plus(other: Temperature): Temperature {
+            return Temperature(value = value.toDouble() + other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun minus(other: Temperature): Temperature {
+            return Temperature(value = value.toDouble() - other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun times(other: Temperature): Temperature {
+            return Temperature(value = value.toDouble() * other.convertTo(unit).value.toDouble(), unit = unit)
+        }
+
+        operator fun div(other: Temperature): Double {
+            return value.toDouble() / other.convertTo(unit).value.toDouble()
         }
     }
 
