@@ -1,6 +1,7 @@
 package com.emmanuel.pastor.simplesmartapps.tricycle.ui.components
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,7 @@ import com.emmanuel.pastor.simplesmartapps.tricycle.R
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.TricycleTheme
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.onSurfaceDiscrete
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.success
+import com.emmanuel.pastor.simplesmartapps.tricycle.ui.theme.warning
 
 @Composable
 fun WearCard(modifier: Modifier = Modifier, name: String, @DrawableRes icon: Int, percentage: Measure.Proportion, replaceIn: Measure.Distance) {
@@ -51,8 +53,21 @@ fun WearCard(modifier: Modifier = Modifier, name: String, @DrawableRes icon: Int
                         .fillMaxWidth()
                         .height(16.dp)
                         .clip(RoundedCornerShape(40.dp)),
-                    color = MaterialTheme.colorScheme.success,
-                    trackColor = MaterialTheme.colorScheme.success.copy(alpha = 0.15f)
+                    color = percentage.value.let {
+                        Log.d("WearCard", "percentage: $it")
+                        when (it) {
+                            in 0.0..0.799 -> MaterialTheme.colorScheme.success
+                            in 0.800..0.949 -> MaterialTheme.colorScheme.warning
+                            else -> MaterialTheme.colorScheme.error
+                        }
+                    },
+                    trackColor = percentage.value.let {
+                        when (it) {
+                            in 0.0..79.9 -> MaterialTheme.colorScheme.success.copy(0.15f)
+                            in 80.0..94.9 -> MaterialTheme.colorScheme.warning.copy(0.15f)
+                            else -> MaterialTheme.colorScheme.error.copy(0.15f)
+                        }
+                    }
                 )
                 Text(
                     text = "Replace in ${replaceIn.toL10nString()}",

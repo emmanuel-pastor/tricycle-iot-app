@@ -2,6 +2,8 @@ package com.emmanuel.pastor.simplesmartapps.tricycle.ui.screens.home
 
 import android.icu.text.RelativeDateTimeFormatter
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,6 +18,7 @@ import com.emmanuel.pastor.simplesmartapps.tricycle.R
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.components.BatteryCard
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.components.SectionLabel
 import com.emmanuel.pastor.simplesmartapps.tricycle.ui.components.SensorCard
+import com.emmanuel.pastor.simplesmartapps.tricycle.ui.components.WearCard
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import kotlin.time.Duration
@@ -28,8 +31,13 @@ import kotlin.time.Duration.Companion.seconds
 fun HomeScreen() {
     val viewModel: HomeViewModel = hiltViewModel()
     val sensorSectionState: SensorSectionState by viewModel.sensorSectionState.collectAsState()
+    val wearSectionState: WearSectionState by viewModel.wearSectionState.collectAsState()
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
         when (sensorSectionState) {
             is SensorSectionState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -41,7 +49,8 @@ fun HomeScreen() {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier
                         .padding(16.dp)
-                        .wrapContentHeight()
+                        .wrapContentHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     SectionLabel(
                         mainLabelText = stringResource(R.string.sensors_section_title),
@@ -67,6 +76,36 @@ fun HomeScreen() {
                         measure = data.motorTemperature,
                         modifier = Modifier.fillMaxWidth()
                     )
+                    SectionLabel(mainLabelText = "Wear", modifier = Modifier.padding(top = 24.dp, bottom = 8.dp))
+                    when (wearSectionState) {
+                        is WearSectionState.Loading -> {
+                            CircularProgressIndicator()
+                        }
+                        is WearSectionState.Success -> {
+                            val wearData = (wearSectionState as WearSectionState.Success).sensorSectionState
+                            WearCard(
+                                name = "Tires",
+                                icon = R.drawable.ic_tires,
+                                percentage = wearData.tiresWear.percentage,
+                                replaceIn = wearData.tiresWear.replaceIn,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            WearCard(
+                                name = "Brakes",
+                                icon = R.drawable.ic_brakes,
+                                percentage = wearData.brakesWear.percentage,
+                                replaceIn = wearData.brakesWear.replaceIn,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            WearCard(
+                                name = "Battery",
+                                icon = R.drawable.ic_battery_health,
+                                percentage = wearData.batteryWear.percentage,
+                                replaceIn = wearData.batteryWear.replaceIn,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        }
+                    }
                 }
             }
         }
