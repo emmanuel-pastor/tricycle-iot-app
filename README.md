@@ -1,5 +1,7 @@
 # Companion App for DONK-e
 
+**The finished features are currently on the `dev` branch**
+
 ## Overview
 DONK-e is a motorized tricycle meant to carry heavy load up to 200 kg. This school project is an app that retrieves data from the tricycle and displays them to the user.
 
